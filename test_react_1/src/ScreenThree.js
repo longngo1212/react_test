@@ -10,7 +10,11 @@ class ScreenThree extends Component {
     constructor(props){
         super(props);
         this.onDishChange = this.onDishChange.bind(this);
+        this.onDishCountChange = this.onDishCountChange.bind(this);
         this.getListFromData = this.getListFromData.bind(this);
+        this.state = {
+            value : 1
+        };
     }
 
 
@@ -19,7 +23,8 @@ class ScreenThree extends Component {
     }
 
     onDishCountChange (selectedOption){
-        this.props.onDishChange(selectedOption.value);
+        this.setState({ value: selectedOption.target.value  });
+        // this.props.onDishChange(selectedOption.target.value);
     }
 
     options = this.getListFromData(this.props.restaurantDishes);
@@ -47,7 +52,7 @@ class ScreenThree extends Component {
                         onChange={this.onDishChange}
                         options={this.options}
                     />
-                    <input type="number" min={1} max={10} value={this.props.selectedDishes.count} onChange={this.onPeopleChange}/>
+                    <input type="number" min={1} max={10} value={this.state.value} onChange={this.onDishCountChange}/>
                 </div>
 
             </div>

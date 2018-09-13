@@ -62,7 +62,9 @@ class App extends Component {
     }
 
     onDishChange(selectedOption){
-        this.setState({ selectedDishes: selectedOption });
+        this.setState({
+            selectedDishes: [...this.state.selectedDishes, selectedOption]
+        });
     }
 
     render() {
