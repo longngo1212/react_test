@@ -28,7 +28,7 @@ class ScreenOne extends Component {
 
     render(){
         return (
-            <div style={{ width: 1000, height: 200}}>
+            <div style={{ width: 1000, height: 500}}>
                 <h1 style={{ width: 300, height: 20, fontSize: 15 }}>Please select a meal</h1>
                 <Select
                     onChange={this.onMealTypeChange}

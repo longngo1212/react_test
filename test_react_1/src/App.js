@@ -19,6 +19,8 @@ class App extends Component {
         this.onPeopleChange = this.onPeopleChange.bind(this);
         this.onRestaurantChange = this.onRestaurantChange.bind(this);
         this.onDishChange = this.onDishChange.bind(this);
+        this.onDishCountChange = this.onDishCountChange.bind(this);
+        this.addDish = this.addDish.bind(this);
         this.state = {
             pageNumber: 1,
             numPeople: 1,
@@ -61,10 +63,36 @@ class App extends Component {
         this.setState({ restaurantName: selectedOption });
     }
 
-    onDishChange(selectedOption){
+    onDishChange(selectedOption, index){
+
+        const items = this.state.selectedDishes;
+        items[index].name = selectedOption;
+
         this.setState({
-            selectedDishes: [...this.state.selectedDishes, selectedOption]
+            selectedDishes: items
         });
+    }
+
+    onDishCountChange(selectedOption, index){
+        const items = this.state.selectedDishes;
+        items[index].count = selectedOption;
+
+        this.setState({
+            selectedDishes: items
+        });
+    }
+
+    addDish(){
+
+        if(this.state.selectedDishes.length >= 10){
+            return;
+        }
+
+
+
+        this.setState({
+            selectedDishes: [...this.state.selectedDishes, { name: "", count: 0}]
+        })
     }
 
     render() {
@@ -81,10 +109,12 @@ class App extends Component {
                                onPeopleChange = {this.onPeopleChange}
                                onRestaurantChange = {this.onRestaurantChange}
                                onDishChange = {this.onDishChange}
+                               onDishCountChange = {this.onDishCountChange}
+                               addDish = {this.addDish}
                                numPeople = {this.state.numPeople}
                                mealType = {this.state.mealType}
                                dishes = {this.dishes}
-                               selectedDishes = {this.selectedDishes}
+                               selectedDishes = {this.state.selectedDishes}
                                restaurantName = {this.state.restaurantName}/>
                 {preButton}{nextButton}
             </div>
@@ -146,6 +176,8 @@ class PageContainer extends Component {
 
                 return <ScreenThree restaurantDishes = {restaurantDishes}
                                     onDishChange = {this.props.onDishChange}
+                                    onDishCountChange = {this.props.onDishCountChange}
+                                    addDish = {this.props.addDish}
                                     selectedDishes = {this.props.selectedDishes}/>;
             case 4:
                 return <ScreenFour/>;

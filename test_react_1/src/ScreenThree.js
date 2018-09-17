@@ -12,31 +12,22 @@ class ScreenThree extends Component {
         this.onDishChange = this.onDishChange.bind(this);
         this.onDishCountChange = this.onDishCountChange.bind(this);
         this.getListFromData = this.getListFromData.bind(this);
-        this.state = {
-            selectedDishes:[
-                {
-                    name: "",
-                    count: 0
-                }
-            ]
-        };
+        this.onClick = this.onClick.bind(this);
     }
 
 
     onDishChange = name => event => {
         console.log("Page change is onDishChange" + event );
 
-        let result = Object.entries(event);
-        result.map((item, index)=>{
-            console.log('key is:- ', item[0], ' and value is:- ', item[1]);
-        });
-        this.props.onDishChange(event.value);
+        // let result = Object.entries(event);
+        // result.map((item, index)=>{
+        //     console.log('key is:- ', item[0], ' and value is:- ', item[1]);
+        // });
+        this.props.onDishChange(event.value, name);
     };
 
     onDishCountChange (selectedOption){
-        console.log("Page change is onDishCountChange " + selectedOption.target.name);
-        this.setState({ value: selectedOption.target.value  });
-        // this.props.onDishChange(selectedOption.target.value);
+        this.props.onDishCountChange(selectedOption.target.value, selectedOption.target.name);
     }
 
     options = this.getListFromData(this.props.restaurantDishes);
@@ -51,41 +42,49 @@ class ScreenThree extends Component {
             index === self.findIndex((t) => (
                 t.value === listRes.value && t.label === listRes.label
             ))
-        )
+        );
         return listRes;
     }
 
 
     createTable = () => {
-        let table = []
+        let table = [];
 
         // Outer loop to create parent
-        for (let i = 0; i < 3; i++) {
-            let children = []
+        for (let i = 0; i < this.props.selectedDishes.length; i++) {
+            let children = [];
             children.push(<Select
                 className="col-sm"
-                name  = {"Select" + i}
+                name  = {i}
                 key  = {"Select" + i}
                 onChange={this.onDishChange(i)}
                 options={this.options}
-            />)
+                defaultValue={  { value: this.props.selectedDishes[i].name, label: this.props.selectedDishes[i].name }}
+            />);
             children.push(<input
                 type="number"
-                name  = {"input" + i }
+                name  = {i}
                 key  = {"input" + i }
                 min={1} max={10}
-                value={this.state.selectedDishes[0].count}
-                onChange={this.onDishCountChange}/>)
+                value={this.props.selectedDishes[i].count}
+                onChange={this.onDishCountChange}/>);
 
             table.push(<div className="row" key  = {"div" + i}>{children}</div>)
         }
         return table
+    };
+
+    onClick() {
+        this.props.addDish();
     }
 
     render(){
         return (
-            <div style={{ width: 1000, height: 200}}>
+            <div style={{ width: 1000, height: 500}}>
                 {this.createTable()}
+                <button onClick={this.onClick}>
+                    Add Dish
+                </button>
             </div>
         );
     }
