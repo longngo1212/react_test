@@ -6,6 +6,7 @@ import ScreenTwo from './ScreenTwo';
 import ScreenThree from './ScreenThree';
 import ScreenFour from './ScreenFour';
 
+
 class App extends Component {
 
     dishes = data.dishes;
@@ -25,7 +26,7 @@ class App extends Component {
             pageNumber: 1,
             numPeople: 1,
             mealType: "breakfast",
-            restaurantName: null,
+            restaurantName: "Default",
             selectedDishes:[
                 {
                     name: "",
@@ -36,11 +37,24 @@ class App extends Component {
     }
 
     handleNextClick() {
-        const num = this.state.pageNumber;
-        if(num === 4){
-        }else {
-            this.setState({ pageNumber: this.state.pageNumber + 1});
+        const num = parseInt(this.state.pageNumber, 0);
+
+        if(num >= 4){
+            return;
         }
+
+        if(num === 3){
+            let totalDishCount = 0;
+            for (let i = 0; i < this.state.selectedDishes.length; i++) {
+                totalDishCount = totalDishCount + parseInt(this.state.selectedDishes[i].count, 0);
+            }
+            if(totalDishCount < this.state.numPeople){
+                alert('Number of dish  should be greater or equal to the number of person');
+                return;
+            }
+        }
+
+        this.setState({ pageNumber: this.state.pageNumber + 1});
     }
 
     handlePreviousClick() {
@@ -65,6 +79,13 @@ class App extends Component {
 
     onDishChange(selectedOption, index){
 
+
+        for (let i = 0; i < this.state.selectedDishes.length; i++) {
+           if(selectedOption.toString() === this.state.selectedDishes[i].name.toString()){
+               return;
+           }
+        }
+
         const items = this.state.selectedDishes;
         items[index].name = selectedOption;
 
@@ -74,6 +95,18 @@ class App extends Component {
     }
 
     onDishCountChange(selectedOption, index){
+
+        let totalDishCount = 0;
+        for (let i = 0; i < this.state.selectedDishes.length; i++) {
+            totalDishCount = totalDishCount + parseInt(this.state.selectedDishes[i].count, 0);
+        }
+
+        if(totalDishCount >= 10){
+            if(selectedOption > parseInt(this.state.selectedDishes[index].count, 0)){
+                return;
+            }
+        }
+
         const items = this.state.selectedDishes;
         items[index].count = selectedOption;
 
@@ -88,7 +121,14 @@ class App extends Component {
             return;
         }
 
+        let totalDishCount = 0;
+        for (let i = 0; i < this.state.selectedDishes.length; i++) {
+            totalDishCount = totalDishCount + parseInt(this.state.selectedDishes[i].count, 0);
+        }
 
+        if(totalDishCount >= 10){
+            return;
+        }
 
         this.setState({
             selectedDishes: [...this.state.selectedDishes, { name: "", count: 0}]
@@ -180,7 +220,10 @@ class PageContainer extends Component {
                                     addDish = {this.props.addDish}
                                     selectedDishes = {this.props.selectedDishes}/>;
             case 4:
-                return <ScreenFour/>;
+                return <ScreenFour numPeople = {this.props.numPeople}
+                                   mealType = {this.props.mealType}
+                                   selectedDishes = {this.props.selectedDishes}
+                                   restaurantName = {this.props.restaurantName}/>;
             default:
                 return <ScreenFour/>;
         }

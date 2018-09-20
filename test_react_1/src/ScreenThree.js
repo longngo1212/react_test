@@ -59,7 +59,7 @@ class ScreenThree extends Component {
                 key  = {"Select" + i}
                 onChange={this.onDishChange(i)}
                 options={this.options}
-                defaultValue={  { value: this.props.selectedDishes[i].name, label: this.props.selectedDishes[i].name }}
+                value={  { value: this.props.selectedDishes[i].name, label: this.props.selectedDishes[i].name }}
             />);
             children.push(<input
                 type="number"
@@ -81,6 +81,10 @@ class ScreenThree extends Component {
     render(){
         return (
             <div style={{ width: 1000, height: 500}}>
+                <div  className="row" >
+                    <h1 className="col-sm" style={{ fontSize: 20 }}>Please select a dish</h1>
+                    <h1 style={{ fontSize: 20 }}>Number of service </h1>
+                </div>
                 {this.createTable()}
                 <button onClick={this.onClick}>
                     Add Dish

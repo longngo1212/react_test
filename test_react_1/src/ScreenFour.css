@@ -1,0 +1,19 @@
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.column_label {
+    width: 400px;
+    height: 20px;
+    fontSize: 15;
+}
+
+.column_data {
+    width: 400px;
+    height: 20px;
+    fontSize: 15;
+}
